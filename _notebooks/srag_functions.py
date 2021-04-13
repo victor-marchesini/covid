@@ -298,37 +298,20 @@ def get_altair_chart_2_axis(df, x_col, cat_col, y_cols,chart_title=''):
 
 def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=None, ns_opacity=1.0,chart_title='',scheme = 'lightmulti',mark_type='line',sort_values=False,y_index = -1,stack=None):
 
-#     if mark_type == 'line':
-    chart = alt.Chart(df).mark_line(point=True,strokeWidth=2) 
-    if mark_type == 'area':
+    if mark_type == 'bar':
+        chart = alt.Chart(df).mark_bar() 
+    elif mark_type == 'area':
         chart = alt.Chart(df).mark_area() 
+    else:
+        chart = alt.Chart(df).mark_line(point=True,strokeWidth=2) 
     
     sort_axis = 'x'
     x_col_ed = x_col
-    if not cat_col:
-        if mark_type == 'bar':
-            chart = alt.Chart(df).mark_bar()    
-        if sort_values:
-#             sort_axis= 'y'
-            x_col_ed=alt.X(f'{x_col}:N', sort='y')
-
-#     brush = alt.selection(type='interval', encodings=['x']) TODO: adicionar filtro de range
-
-
-
-
-#     year_slider = alt.binding_range(min=1969, max=2018, step=1)
-#     slider_selection = alt.selection_single(bind=year_slider, fields=['Release_Year'], name="Release Year_")
-
-    
-    
+    if sort_values:
+        x_col_ed=alt.X(f'{x_col}:N', sort='y')
+   
     chart = chart.encode(
         x=x_col_ed,
-#         x=alt.X(x_col,
-#                 scale=alt.Scale(domain=(0, slider[x_col][0])),
-#                 sort=sort_axis
-#                ),
-#         x = alt.X(f'{x_col}:N', scale=alt.Scale(domain=brush)), TODO: adicionar filtro de range
         tooltip=list(df.columns),
     ).properties(
         width=600,
@@ -338,8 +321,6 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
 
     if sliders:
         for key,value in sliders.items():
-#             print(key,value)
-#             if key in ['min','max']:
             if key == 'min':
                 comparisson = '>='
             elif key == 'max':
@@ -358,24 +339,14 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
                 slider_col = value
                 init_value = eval(f'{key}(df[slider_col])')
 
-#             print(key,slider_col,init_value,comparisson)
             if slider_col in df.columns:
                 slider = alt.binding_range(min=min(df[slider_col]), max=max(df[slider_col]), step=1)
                 slider_selector = alt.selection_single(bind=slider,name=key, fields=[slider_col],
                                                        init={slider_col: init_value}
                                                       )
-#                 print(f'datum.{slider_col} {comparisson} {key}.{slider_col}[0]')
                 chart = chart.add_selection(slider_selector).transform_filter(f'datum.{slider_col} {comparisson} {key}.{slider_col}[0]')
 
-#                 slider_selector = alt.selection_single(bind=slider,name="min",fields=[slider_col],init={slider_col: 10})
-
-#                 chart = chart.add_selection(
-#                     slider_selector
-#                 ).transform_filter( f'datum.{slider_col} >= min.{slider_col}[0]')
-
-
-                
-                
+           
 
     
     if y_cols =='ALL':
@@ -422,12 +393,7 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
 #     lower = chart.properties(
 #         height=60
 #     ).add_selection(brush)
-
 #     chart = chart & lower
-
-
-
-
 
     if cat_col:
         base_cat = cat_col        
@@ -444,7 +410,7 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
         )
 
         bar = alt.Chart(df).mark_bar().encode(
-            y=alt.Y(f'{base_cat}:O',title=None), # axis=alt.Axis(orient='right'  f'{base_cat}:N',
+            y=alt.Y(f'{base_cat}:O',title=None),
             x='total',
 #             tooltip='total',
             color=alt.condition(sel_base, alt.Color(f'{base_cat}:N', scale=alt.Scale(scheme=scheme)), alt.ColorValue("lightgrey"),legend=None)
