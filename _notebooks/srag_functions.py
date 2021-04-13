@@ -238,7 +238,7 @@ def get_outcome_data(df,index_cols,total=True,rates=True):
             new_col = col
             if col in new_index:
                 new_col = '_' + col
-                df_sel[new_col] =  df_sel[col]
+                df[new_col] =  df[col]
             new_index.append(new_col)
         index_cols = new_index
     
