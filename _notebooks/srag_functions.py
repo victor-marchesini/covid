@@ -42,10 +42,7 @@ def get_srag_data(years=[2021],update=True,save_local=True,treat=True,selected_c
         else:
             url = get_last_bd_srag_csv_url(year)
             print(f'\nDownloading from <{url}> ... ', end='')
-            if year == 2019:
-                sep = ','
-                print('\n\n Problema com leitura do arquivo. Não identifiquei qual.')
-            df = pd.read_csv(url,sep=sep,quotechar=quotechar,dtype=object)
+            df = pd.read_csv(url,sep=sep,quotechar=quotechar,dtype=object, encoding='latin1')
             if save_local:
                 df.to_csv(fname,index=False)
             print('complete!\n')
@@ -83,7 +80,7 @@ def set_age_ranges(x):
     else:
         return '80+'
 
-def treat_srag_data(df_orig,selected_columns='BASIC',aditional_columns=[]):
+def treat_srag_data(df_orig,selected_columns='',aditional_columns=[]):
     "Select columns, set types and replace values."
     
     not_valid_col = 'nd'
@@ -99,10 +96,13 @@ def treat_srag_data(df_orig,selected_columns='BASIC',aditional_columns=[]):
                       #'ID_MN_RESI','ID_MN_ITE','ID_MUNICIP',
                       'SUPORT_VEN', 'UTI','SATURACAO','FATOR_RISC']
     
-        if selected_columns == 'BASIC':
+        if selected_columns == 'BASIC' or not aditional_columns:
             cols = basic_cols
         else:
-            cols = basic_cols + list(aditional_columns)
+            if type(aditional_columns) is list:
+                cols = basic_cols + aditional_columns
+            else:
+                print('O parâmetro <aditional_columns> deve ser do tipo list')
             
         orig_cols = df_orig.columns
         for col in cols:
@@ -220,7 +220,7 @@ def get_pivot_data(df,index_cols=[],columns_cols=[],values_cols='',last_week=999
                 df2[index_cols[i:]] = '--TODOS--'
                 df = pd.concat([df1,df2])
         
-    df['total'] = df.sum(axis=1)
+    df['total'] = df.sum(axis=1,numeric_only=True)
     df = df.reset_index()
     return df
 
@@ -366,7 +366,7 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
         
         chart = chart.transform_fold(
             columns,
-            as_=[y_col_name, 'Valor']
+            # as_=[y_col_name, 'Valor']
         ).transform_filter(
             sel  
         )
@@ -385,9 +385,18 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
         chart = chart.add_selection(sel)
     else:
         y_col = y_cols[0]
-        chart = chart.encode(
-            y=y_col
-        )        
+        if stack == 'normalize':
+            chart = chart.encode(
+                y=alt.Y(f"{y_col}:Q", stack="normalize"),
+            )
+        elif stack == 'sum':
+            chart = chart.encode(
+                y=f'sum({y_col}):Q',
+            )
+        else:
+            chart = chart.encode(
+                y=f'{y_col}:Q',
+             )
 
 #     TODO: adicionar filtro de range
 #     lower = chart.properties(
@@ -447,7 +456,7 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
     return chart
 
 
-def dataFrame2Chart(df,x_col,cat_col=None,sel_cols=None,selection_dict={},sliders=None,y_cols='ALL',chart_title='',ns_opacity=0.1,
+def dataFrame2Chart(df,x_col,cat_col=None,sel_cols=None,selection_dict={},sliders=None,y_cols=['tx_obito_concluido'],chart_title='',ns_opacity=0.1,
                     scheme ='lightmulti',mark_type='line',sort_values=False,naxis=1,total=True,stack=None,rates=True):
     print(f'Seleção {chart_title}:')
     for key,value in selection_dict.items():
