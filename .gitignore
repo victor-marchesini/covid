@@ -12,5 +12,9 @@ _notebooks/.ipynb_checkpoints
 .netlify
 .tweet-cache
 __pycache__
-_notebooks/data/opendatasus/
+_notebooks/data/*
+_notebooks/maps/*
+_notebooks/results/*
+_posts
+settings.ini
 .venv
