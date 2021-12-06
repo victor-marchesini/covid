@@ -170,7 +170,8 @@ def get_group_results(ano,uf,selection_dict,group_level='NM_BAIRRO',selected_col
         candidato_ref = str(candidatxs_cols[0])
         ref_index = cols.index(candidato_ref)
         cols = cols[:2] + [ cols[ref_index] ]  + candidatxs_cols[1:] #cols[2:ref_index] + cols[ref_index + 1 :]
-        df_out = df_out[cols]
+        selected_cols = [col for col in cols if col in df_out.columns]
+        df_out = df_out[selected_cols].copy()
         
         # ordena com base no candidato_ref e renomeia as colunas 
         
