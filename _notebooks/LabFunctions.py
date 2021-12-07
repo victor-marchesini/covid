@@ -287,7 +287,7 @@ def map2png(m,folder_path='maps/',filename='map.png'):
 # myscale = (df[column].quantile((0,0.2,0.4,0.6,0.8,0.9,1))).tolist()
 # myscale = (df[column].quantile((0,0.8,0.85,0.90,0.95,1))).tolist()
 
-def get_map(bairros_geo,df,column,legend_name,max_scale=0):
+def get_map(bairros_geo,df,legend_name,max_scale=0):
     df = df.copy()
     if max_scale:
         new_row = len(df.index)
@@ -300,7 +300,7 @@ def get_map(bairros_geo,df,column,legend_name,max_scale=0):
 #     myscale = (df[column].quantile((0,0.8,0.85,0.90,0.95,1))).tolist()
 
 #     colorscale = branca.colormap.linear.YlOrRd_09.scale(0, 3e3)
-    m = folium.Map(location=[-22.90,-43.4], zoom_start=11)#,tiles= 'Stamen Terrain')
+    m = folium.Map(location=[-22.90,-43.4], zoom_start=11,tiles= 'Stamen Terrain')
     folium.Choropleth(
         geo_data=bairros_geo,
         name='choropleth',
