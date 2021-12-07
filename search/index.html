@@ -48,6 +48,41 @@ window.onload = wrap_img;
     elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+
+      // As with JSON, use the Fetch API & ES6
+      fetch('/covid/maps/maps_dict.json')
+        .then(response => response.text())
+        .then(data => {
+          // Do something with your data
+          // const json = '{"result":true, "count":42}';
+          const obj = JSON.parse(data);
+
+          for (const [key, value] of Object.entries(obj)) {
+            console.log(key, value);
+          }
+
+          console.log(obj);
+          // expected output: 42
+
+          // console.log(obj.2);
+// expected output: true
+
+          // console.log(data);
+          let name = 'test.html';
+          let iframe_html = '<iframe src="/covid/maps/';
+          iframe_html += name;
+          iframe_html += '" allowfullscreen="" width="100%" height="400px" frameborder="0"></iframe>'
+          document.querySelector('#teste01').innerHTML = iframe_html;
+
+        });
+      
+    });
+
+
+  </script>
+  
 </head>
 <body><header class="site-header">
 
