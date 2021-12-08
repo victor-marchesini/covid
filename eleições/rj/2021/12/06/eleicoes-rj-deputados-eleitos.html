@@ -51,41 +51,6 @@ window.onload = wrap_img;
     elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
     });
 </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function(){
-
-      // As with JSON, use the Fetch API & ES6
-      fetch('/covid/maps/maps_dict.json')
-        .then(response => response.text())
-        .then(data => {
-          // Do something with your data
-          // const json = '{"result":true, "count":42}';
-          const obj = JSON.parse(data);
-
-          for (const [key, value] of Object.entries(obj)) {
-            console.log(key, value);
-          }
-
-          console.log(obj);
-          // expected output: 42
-
-          // console.log(obj.2);
-// expected output: true
-
-          // console.log(data);
-          let name = 'test.html';
-          let iframe_html = '<iframe src="/covid/maps/';
-          iframe_html += name;
-          iframe_html += '" allowfullscreen="" width="100%" height="400px" frameborder="0"></iframe>'
-          document.querySelector('#teste01').innerHTML = iframe_html;
-
-        });
-      
-    });
-
-
-  </script>
-  
 </head>
 <body><header class="site-header">
 
@@ -154,6 +119,39 @@ window.onload = wrap_img;
       </header>
 
   <div class="post-content e-content" itemprop="articleBody">
+    <h3>Mapas</h3>
+    <h4>Opções:</h4>
+    <div class="output_area">
+      <form>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Selecione um cargo:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="sel_cargo">
+              <option value="---">---</option>
+              <option value="DEPUTADO FEDERAL">DEPUTADO FEDERAL</option>
+              <option value="DEPUTADO ESTADUAL">DEPUTADO ESTADUAL</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Selecione um ano:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="sel_ano">
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Selecione um candidato:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="sel_cand">
+            </select>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div id="teste01"></div>
+    
     <ul class="section-nav">
 <li class="toc-entry toc-h2"><a href="#Relação-dos-candidatos-eleitos-de-esquerda">Relação dos candidatos eleitos de esquerda </a>
 <ul>
@@ -2515,7 +2513,6 @@ window.onload = wrap_img;
 
 
 
-    <div id="teste01"></div>
     
     <!-- <iframe src="/covid/maps/html/2018_RJ_RIO_DE_JANEIRO_DEPUTADO_FEDERAL_5005_-_JEAN_WYLLYS_DE_MATOS_SANTOS.html"
     allowfullscreen="" width="100%" height="400px" frameborder="0"></iframe> -->
@@ -2527,6 +2524,7 @@ window.onload = wrap_img;
     </section>
   </div><a class="u-url" href="/covid/elei%C3%A7%C3%B5es/rj/2021/12/06/eleicoes-rj-deputados-eleitos.html" hidden></a>
 </article>
+<script src="/covid/assets/js/bairros.js"></script>
       </div>
     </main><footer class="site-footer h-card">
   <data class="u-url" href="/covid/"></data>
