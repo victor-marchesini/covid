@@ -55,8 +55,8 @@ layout: default
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3>Mapas</h3>
-    <h4>Opções:</h4>
+
+    <h5>Opções:</h5>
     <div class="output_area">
       <form>
         <div class="form-group row">
@@ -77,6 +77,19 @@ layout: default
           </div>
         </div>
         <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Contagem:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="sel_contagem">
+            </select>
+          </div>
+        </div>
+      </form>
+      <h4>Tabelas</h4>
+      <div id="tabelas">tabelas aqui</div>
+      
+      <h4>Mapas</h4>
+      <form>
+        <div class="form-group row">
           <label class="col-sm-2 col-form-label">Selecione um candidato:</label>
           <div class="col-sm-4">
             <select class="form-control" id="sel_cand">
@@ -85,9 +98,11 @@ layout: default
         </div>
       </form>
 
+      <div id="mapa_folium"></div>
+      
     </div>
-    <div id="teste01"></div>
     
+
     {{ content | toc  }}
     
     <!-- <iframe src="/covid/maps/html/2018_RJ_RIO_DE_JANEIRO_DEPUTADO_FEDERAL_5005_-_JEAN_WYLLYS_DE_MATOS_SANTOS.html"
