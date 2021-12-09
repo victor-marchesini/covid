@@ -93,8 +93,8 @@ window.onload = wrap_img;
     </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h3>Mapas</h3>
-    <h4>Opções:</h4>
+
+    <h5>Opções:</h5>
     <div class="output_area">
       <form>
         <div class="form-group row">
@@ -115,6 +115,19 @@ window.onload = wrap_img;
           </div>
         </div>
         <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Contagem:</label>
+          <div class="col-sm-4">
+            <select class="form-control" id="sel_contagem">
+            </select>
+          </div>
+        </div>
+      </form>
+      <h4>Tabelas</h4>
+      <div id="tabelas">tabelas aqui</div>
+      
+      <h4>Mapas</h4>
+      <form>
+        <div class="form-group row">
           <label class="col-sm-2 col-form-label">Selecione um candidato:</label>
           <div class="col-sm-4">
             <select class="form-control" id="sel_cand">
@@ -123,9 +136,11 @@ window.onload = wrap_img;
         </div>
       </form>
 
+      <div id="mapa_folium"></div>
+      
     </div>
-    <div id="teste01"></div>
     
+
     <ul class="section-nav">
 <li class="toc-entry toc-h1"><a href="#example-markdown-post">Example Markdown Post</a>
 <ul>
