@@ -81,7 +81,7 @@ function load_json(file_path) {
           document.querySelector('#tabelas').innerHTML = '';
         }
         else {
-          console.log(obj[cargo][ano][contagem]);
+          // console.log(obj[cargo][ano][contagem]);
           input_file = obj[cargo][ano][contagem]['tabela'];
           document.querySelector('#tabelas').innerHTML = get_iframe(input_file);
           // load_map(table_file);
@@ -92,7 +92,7 @@ function load_json(file_path) {
           for (const [cand, cand_file] of Object.entries(cand_dict)) {
             const option = new Option(cand, cand_file);
             select_cand.add(option, undefined);
-            console.log(cand, cand_file)
+            // console.log(cand, cand_file)
           }
         }
       }
@@ -101,11 +101,6 @@ function load_json(file_path) {
         e.preventDefault();
         input_file = select_cand.value;
         document.querySelector('#mapa_folium').innerHTML = get_iframe(input_file);
-        // load_map(cand_file);
-        // if (cand_file !== '---') {
-        //   console.log(cand_file);
-        //   load_map(cand_file);
-        // }
       }
 
     });
@@ -129,19 +124,19 @@ function removeAll(selectBox) {
 //   }
 // }
 
-function load_map(input_file) {
-  console.log(input_file);
-  if (input_file === "---") {
-    document.querySelector('#mapa_folium').innerHTML = '';
-  }
-  else {
-    let iframe_html = '<iframe src="' + input_file + '" allowfullscreen="" width="100%" height="400px" frameborder="0"></iframe>';
-    document.querySelector('#mapa_folium').innerHTML = iframe_html;
-  }
-}
+// function load_map(input_file) {
+//   // console.log(input_file);
+//   if (input_file === "---") {
+//     document.querySelector('#mapa_folium').innerHTML = '';
+//   }
+//   else {
+//     let iframe_html = '<iframe src="' + input_file + '" allowfullscreen="" width="100%" height="400px" frameborder="0"></iframe>';
+//     document.querySelector('#mapa_folium').innerHTML = iframe_html;
+//   }
+// }
 
 function get_iframe(input_file) {
-  console.log(input_file);
+  // console.log(input_file);
   if (input_file === "---") {
      return '';
   }
