@@ -16,7 +16,8 @@ from srag_functions import *
 # df_srag = get_srag_data(years=[2019,2020,2021],update=False,treat=True,save_local=True)
 
 frames = []
-for year in [2019,2020,2021]:
+# for year in [2019,2020,2021,2022]:
+for year in [2020,2021,2022]:
     df = get_srag_data(years=[year],update=True,treat=True,save_local=True)
     df['ano'] = year
     frames.append(df)

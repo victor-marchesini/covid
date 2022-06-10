@@ -6,6 +6,21 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import altair as alt
 
+def get_last_bd_srag_csv_url_temp(year):
+    
+    assert year in [2019,2020,2021,2022]
+    if year == 2019:
+        url = 'https://d26692udehoye.cloudfront.net/SRAG/2019/INFLUD19.csv'
+    elif year == 2020:
+        url = 'https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2020/INFLUD20-30-05-2022.csv'
+    elif year == 2021:
+        url = 'https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2021/INFLUD21-30-05-2022.csv'
+    elif year == 2022:
+        url = 'https://s3.sa-east-1.amazonaws.com/ckan.saude.gov.br/SRAG/2022/INFLUD22-30-05-2022.csv'
+    
+    return url
+
+
 def get_last_bd_srag_csv_url(year=2021):
     
     available_years = (2019,2020,2021)
@@ -40,7 +55,8 @@ def get_srag_data(years=[2021],update=True,save_local=True,treat=True,selected_c
             print(f'\nReading OpenDataSus from local file <{fname}>. If you prefer to download last version, set "update=True".\n')
             df = pd.read_csv(fname,dtype=object)
         else:
-            url = get_last_bd_srag_csv_url(year)
+            # url = get_last_bd_srag_csv_url(year)
+            url = get_last_bd_srag_csv_url_temp(year)
             print(f'\nDownloading from <{url}> ... ', end='')
             df = pd.read_csv(url,sep=sep,quotechar=quotechar,dtype=object, encoding='latin1')
             if save_local:
