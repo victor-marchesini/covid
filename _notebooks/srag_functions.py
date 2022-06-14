@@ -269,7 +269,7 @@ def get_outcome_data(df,index_cols,total=True,rates=True):
         df['tx_obito_concluido'] = total_obitos / total_concluidos
     return df
 
-def get_altair_chart_2_axis(df, x_col, cat_col, y_cols,chart_title=''):
+def get_altair_chart_2_axis(df, x_col, cat_col, y_cols,chart_title='',y_title=None):
     
     y_col_1 = y_cols[0]
     y_col_2 = y_cols[1]
@@ -282,12 +282,15 @@ def get_altair_chart_2_axis(df, x_col, cat_col, y_cols,chart_title=''):
         bind={cat_col: alt.binding_select(options=options_list)}
     )
     
+    if not y_title:
+        y_title = 'Taxa de óbito'
+    
     base = alt.Chart(df).encode(
         alt.X(x_col, axis=alt.Axis(title='Semana Primeiros sintomas'))
     )
     line1 = base.mark_line(stroke='#57A44C', interpolate='monotone').add_selection(
         selection
-    ).encode(alt.Y(y_col_1,axis=alt.Axis(title='Taxa de óbito', titleColor='#57A44C'))
+    ).encode(alt.Y(y_col_1,axis=alt.Axis(title=y_title, titleColor='#57A44C',format='%'))
              ,color=cat_col
              ,tooltip=list(df.columns)
             ).transform_filter(
@@ -312,7 +315,7 @@ def get_altair_chart_2_axis(df, x_col, cat_col, y_cols,chart_title=''):
     return chart
 
 
-def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=None, ns_opacity=1.0,chart_title='',scheme = 'lightmulti',mark_type='line',sort_values=False,y_index = -1,stack=None):
+def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=None, ns_opacity=1.0,chart_title='',scheme = 'lightmulti',mark_type='line',sort_values=False,y_index = -1,stack=None,y_title=None):
 
     if mark_type == 'bar':
         chart = alt.Chart(df).mark_bar() 
@@ -410,9 +413,14 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
                 y=f'sum({y_col}):Q',
             )
         else:
-            chart = chart.encode(
-                y=f'{y_col}:Q',
-             )
+            if y_title:
+                chart = chart.encode(
+                    y=alt.Y(f'{y_col}:Q', title=y_title,axis=alt.Axis(format='%'))
+                )
+            else:
+                chart = chart.encode(
+                    y=f'{y_col}:Q'
+                )
 
 #     TODO: adicionar filtro de range
 #     lower = chart.properties(
@@ -473,7 +481,7 @@ def get_altair_chart(df,x_col,y_cols='ALL',cat_col=None,sel_cols=None, sliders=N
 
 
 def dataFrame2Chart(df,x_col,cat_col=None,sel_cols=None,selection_dict={},sliders=None,y_cols=['tx_obito_concluido'],chart_title='',ns_opacity=0.1,
-                    scheme ='lightmulti',mark_type='line',sort_values=False,naxis=1,total=True,stack=None,rates=True):
+                    scheme ='lightmulti',mark_type='line',sort_values=False,naxis=1,total=True,stack=None,rates=True,y_title=None):
     print(f'Seleção {chart_title}:')
     for key,value in selection_dict.items():
         print(f'\t{key} {value}')
@@ -490,9 +498,9 @@ def dataFrame2Chart(df,x_col,cat_col=None,sel_cols=None,selection_dict={},slider
     print('\tDimensões dos dados do gráfico:', df.shape)
     if naxis == 1:
         chart = get_altair_chart(df,x_col,y_cols,cat_col,sel_cols,sliders=sliders,ns_opacity=ns_opacity,
-                                 chart_title=chart_title, scheme=scheme,mark_type=mark_type,sort_values=sort_values,stack=stack)
+                                 chart_title=chart_title, scheme=scheme,mark_type=mark_type,sort_values=sort_values,stack=stack,y_title=y_title)
     elif naxis == 2:
-        chart = get_altair_chart_2_axis(df, x_col=index_cols[0], cat_col=index_cols[1], y_cols=y_cols,chart_title=chart_title)
+        chart = get_altair_chart_2_axis(df, x_col=index_cols[0], cat_col=index_cols[1], y_cols=y_cols,chart_title=chart_title,y_title=y_title)
     else:
         print('Não implementado ainda.')
     return chart
