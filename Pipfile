@@ -9,6 +9,7 @@ bs4 = "*"
 altair = "*"
 odfpy = "*"
 openpyxl = "*"
+matplotlib = "*"
 
 [dev-packages]
 ipykernel = "*"
